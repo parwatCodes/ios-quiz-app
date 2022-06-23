@@ -9,57 +9,73 @@ import Foundation
 import UIKit
 
 class QuizViewController: UIViewController {
-    var points = 0;
-    var isAnswerSelected = false;
     var currentQuestionIndex = 0;
+
+    var resultViewCtrl: ResultViewController!
+    var selectedQuestions: [Question] = [] // Loads 3 questions randomly
+    var currentQuestion: Question?
+    
+    var questions = getQuestions() // Loads all questions.
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setInitialQuestion()
+        setInitialConfigs()
+        setValuesForLabels()
+    }
     
     @IBOutlet weak var question: UILabel!
     @IBOutlet weak var questionNo: UILabel!
     @IBOutlet weak var totalQuestions: UILabel!
-    
     @IBOutlet weak var optionA: UIButton!
     @IBOutlet weak var optionB: UIButton!
     @IBOutlet weak var optionC: UIButton!
     @IBOutlet weak var optionD: UIButton!
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
-    
     @IBOutlet var progressBar: UIProgressView!
     
     @IBAction func optionA(_ sender: UIButton) {
+        changeSelectedOptionColor(optionA)
         
     }
     @IBAction func optionB(_ sender: UIButton) {
-        
+        changeSelectedOptionColor(optionB)
     }
     @IBAction func optionC(_ sender: UIButton) {
-        
+        changeSelectedOptionColor(optionC)
     }
     @IBAction func optionD(_ sender: UIButton) {
-        
+        changeSelectedOptionColor(optionD)
     }
-    
     @IBAction func next(_ sender: UIButton) {
         
     }
-    
     @IBAction func prev(_ sender: UIButton) {
         
     }
     
-    var selectedQuestions: [Question] = []
-    var currentQuestion: Question?
-    
-    var questions = [Question(q: "Which of the following is not a web browser?", a: "MOSAIC", b: "WWW", c: "Facebook", d: "Netscape navigator", ans: "c"), Question(q: "In computer world, Trojan refer to:", a: "Virus", b: "Malware", c: "Worm", d: "Spyware", ans: "b"), Question(q: "Which protocol is used to receive e-mails", a: "SMTP", b: "POP3", c: "HTTP", d: "FTP", ans: "b"),  Question(q: "Which protocol is used to send e-mails?", a: "SMTP", b: "POP3", c: "HTTP", d: "FTP", ans: "a"),  Question(q: "Which type of number system to calculate and to store data?", a: "Decimal", b: "Octal", c: "Binary", d: "HexaDecimal", ans: "c"), Question(q: "How many bits are in 1 byte?", a: "4", b: "8", c: "16", d: "1", ans: "b")]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        setInitialQuestion()
-        setValuesForLabels()
+    @IBAction func setAnswer(_ sender: UIButton) {
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    @IBAction func prevQuestion(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func nextQuestion(_ sender: UIButton) {
+        if (currentQuestionIndex + 1 == 3) {
+            resultViewCtrl = storyboard?.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController
+
+            resultViewCtrl.modalPresentationStyle = .fullScreen
+            return self.present(resultViewCtrl, animated: true, completion: nil)
+        }
+        
+        currentQuestionIndex += 1
+        currentQuestion = self.selectedQuestions[currentQuestionIndex]
+        
+        setValuesForLabels()
         
     }
     
@@ -74,53 +90,65 @@ class QuizViewController: UIViewController {
     }
     
     func setInitialQuestion() {
-        selectedQuestions = getRandom3Questions()
+        selectedQuestions = getRandom3Questions(questions)
         currentQuestion = self.selectedQuestions[0]
+    }
+    
+    func setInitialConfigs() {
         currentQuestionIndex = 0;
         prevButton.isEnabled = false
-//        progressBar.progress = 
-    }
-
-    func getRandom3Questions() -> [Question] {
-        let shuffledArr = questions.shuffled();
-        
-        return Array(shuffledArr.prefix(3));
+        nextButton.isEnabled = false
     }
     
-    @IBAction func setAnswer(_ sender: UIButton) {
+    func isAnswerSelectedForCurrentQuestion() -> Bool {
+        let isAnsSelected = selectedQuestions[currentQuestionIndex].userAnswer
         
+        return isAnsSelected != nil ? true : false
     }
     
-    @IBAction func prevQuestion(_ sender: UIButton) {
-        
+    func changePrevButtonFlag(flag: Bool) {
+        prevButton.isEnabled = flag
     }
     
-    @IBAction func nextQuestion(_ sender: UIButton) {
-        
-        // index starts from 0 till 2. (0, 1, 2)
-        if (currentQuestionIndex + 1 == 3) {
-            
+    func changeNextButtonFlag(flag: Bool) {
+        nextButton.isEnabled = flag
+    }
+    
+    func setSelectedColor(selectedOption: UIButton) {
+        selectedOption.backgroundColor = .green
+        selectedOption.tintColor = .black
+    }
+    
+    func unsetColor(_ option: UIButton) {
+        option.backgroundColor = nil
+        option.tintColor = nil
+    }
+    
+    func changeSelectedOptionColor(_ selectedOption: UIButton) {
+        switch selectedOption {
+            case optionA:
+                setSelectedColor(selectedOption: optionA)
+                unsetColor(optionB)
+                unsetColor(optionC)
+                unsetColor(optionD)
+            case optionB:
+                setSelectedColor(selectedOption: optionB)
+                unsetColor(optionA)
+                unsetColor(optionC)
+                unsetColor(optionD)
+            case optionC:
+                setSelectedColor(selectedOption: optionC)
+                unsetColor(optionA)
+                unsetColor(optionB)
+                unsetColor(optionD)
+            case optionD:
+                setSelectedColor(selectedOption: optionD)
+                unsetColor(optionB)
+                unsetColor(optionC)
+                unsetColor(optionA)
+            default:
+                break
         }
-        
-        currentQuestionIndex += 1
-        currentQuestion = self.selectedQuestions[currentQuestionIndex]
-        
-        setValuesForLabels()
-        
-    }
-    
-    func getResults() {
-        
     }
 }
 
-extension Array {
-    /// Picks `n` random elements (partial Fisher-Yates shuffle approach)
-    subscript (randomPick n: Int) -> [Element] {
-        var copy = self
-        for i in stride(from: count - 1, to: count - n - 1, by: -1) {
-            copy.swapAt(i, Int(arc4random_uniform(UInt32(i + 1))))
-        }
-        return Array(copy.suffix(n))
-    }
-}

@@ -230,10 +230,10 @@
             </objects>
             <point key="canvasLocation" x="704.34782608695662" y="75.669642857142847"/>
         </scene>
-        <!--View Controller-->
+        <!--Result View Controller-->
         <scene sceneID="Q5U-Mf-Pcm">
             <objects>
-                <viewController id="mYW-Nl-N4a" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ResultViewContainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mYW-Nl-N4a" customClass="ResultViewController" customModule="finalProjectMAD3115" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GEQ-g4-pjh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -281,10 +281,11 @@
                         <viewLayoutGuide key="safeArea" id="xhe-cn-HbU"/>
                         <color key="backgroundColor" red="0.5610808644047981" green="0.76942896842956543" blue="0.48313993959570595" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
+                    <navigationItem key="navigationItem" id="lxE-Ke-BeL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Nw-j2-1El" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1327.536231884058" y="87.723214285714278"/>
+            <point key="canvasLocation" x="1472" y="82"/>
         </scene>
     </scenes>
     <resources>
