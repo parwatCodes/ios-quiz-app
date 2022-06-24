@@ -10,7 +10,8 @@ import UIKit
 
 class QuizViewController: UIViewController {
     var currentQuestionIndex = 0;
-
+    var totalPoints = 0;
+    
     var resultViewCtrl: ResultViewController!
     var selectedQuestions: [Question] = [] // Loads 3 questions randomly
     var currentQuestion: Question?
@@ -38,7 +39,11 @@ class QuizViewController: UIViewController {
     
     @IBAction func optionA(_ sender: UIButton) {
         changeSelectedOptionColor(optionA)
+//        let isAnsSelected = isAnswerSelectedForCurrentQuestion();
         
+//        if isAnsSelected {
+            
+//        }
     }
     @IBAction func optionB(_ sender: UIButton) {
         changeSelectedOptionColor(optionB)
@@ -61,7 +66,10 @@ class QuizViewController: UIViewController {
     }
     
     @IBAction func prevQuestion(_ sender: UIButton) {
+        currentQuestionIndex -= 1
         
+        currentQuestion = self.selectedQuestions[currentQuestionIndex]
+        setValuesForLabels()
     }
     
     @IBAction func nextQuestion(_ sender: UIButton) {
@@ -69,6 +77,8 @@ class QuizViewController: UIViewController {
             resultViewCtrl = storyboard?.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController
 
             resultViewCtrl.modalPresentationStyle = .fullScreen
+            resultViewCtrl.totalPoints = totalPoints
+            resultViewCtrl.totalQuestions = selectedQuestions.count
             return self.present(resultViewCtrl, animated: true, completion: nil)
         }
         
@@ -77,6 +87,9 @@ class QuizViewController: UIViewController {
         
         setValuesForLabels()
         
+        if currentQuestionIndex != 0 {
+            prevButton.isEnabled = true;
+        }
     }
     
     func setValuesForLabels() {
@@ -103,15 +116,9 @@ class QuizViewController: UIViewController {
     func isAnswerSelectedForCurrentQuestion() -> Bool {
         let isAnsSelected = selectedQuestions[currentQuestionIndex].userAnswer
         
+        print(isAnsSelected)
+        
         return isAnsSelected != nil ? true : false
-    }
-    
-    func changePrevButtonFlag(flag: Bool) {
-        prevButton.isEnabled = flag
-    }
-    
-    func changeNextButtonFlag(flag: Bool) {
-        nextButton.isEnabled = flag
     }
     
     func setSelectedColor(selectedOption: UIButton) {
@@ -125,6 +132,8 @@ class QuizViewController: UIViewController {
     }
     
     func changeSelectedOptionColor(_ selectedOption: UIButton) {
+        nextButton.isEnabled = true;
+        
         switch selectedOption {
             case optionA:
                 setSelectedColor(selectedOption: optionA)
