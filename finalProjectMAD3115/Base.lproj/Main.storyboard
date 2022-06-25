@@ -171,7 +171,6 @@
                                     <fontDescription key="titleFontDescription" type="system" weight="heavy" pointSize="13"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="next:" destination="7oZ-cK-d7m" eventType="touchUpInside" id="drj-aW-50y"/>
                                     <action selector="nextQuestion:" destination="7oZ-cK-d7m" eventType="touchUpInside" id="Sgb-ic-KbL"/>
                                 </connections>
                             </button>
@@ -184,7 +183,6 @@
                                     <fontDescription key="titleFontDescription" type="system" weight="heavy" pointSize="13"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="prev:" destination="7oZ-cK-d7m" eventType="touchUpInside" id="Ps9-LQ-Awi"/>
                                     <action selector="prevQuestion:" destination="7oZ-cK-d7m" eventType="touchUpInside" id="5IL-ea-LIg"/>
                                 </connections>
                             </button>
@@ -265,19 +263,6 @@
                                 <color key="shadowColor" red="0.83794732309999997" green="0.54430110679999999" blue="0.070900225819999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <size key="shadowOffset" width="2" height="0.0"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y44-9y-PCw">
-                                <rect key="frame" x="46" y="519" width="320" height="71"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.85663557544197" green="0.59939231076623345" blue="0.067925733460939358" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="RETAKE  QUIZ">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="30"/>
-                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="startQuiz:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qeE-Yz-cIx"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vyq-KI-7ud">
                                 <rect key="frame" x="337" y="52" width="57" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -285,6 +270,20 @@
                                 <buttonConfiguration key="configuration" style="plain" image="x.circle" catalog="system">
                                     <color key="baseForegroundColor" systemColor="systemRedColor"/>
                                 </buttonConfiguration>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y44-9y-PCw">
+                                <rect key="frame" x="46" y="523" width="320" height="71"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.85663557544197" green="0.59939231076623345" blue="0.067925733460939358" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="RETAKE  QUIZ" imagePadding="20">
+                                    <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
+                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="28"/>
+                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="startQuiz:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qeE-Yz-cIx"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xhe-cn-HbU"/>
@@ -302,6 +301,7 @@
         <image name="arrow.backward" catalog="system" width="128" height="98"/>
         <image name="arrow.forward" catalog="system" width="128" height="98"/>
         <image name="brain" width="256" height="256"/>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="x.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

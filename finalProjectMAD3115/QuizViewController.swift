@@ -9,7 +9,13 @@ import Foundation
 import UIKit
 
 class QuizViewController: UIViewController {
-    var currentQuestionIndex = 0;
+    var currentQuestionIndex = 0 {
+        didSet {
+            if (currentQuestionIndex == 0) {
+                prevButton.isEnabled = false;
+            }
+        }
+    }
     var totalPoints = 0;
     
     var resultViewCtrl: ResultViewController!
@@ -39,30 +45,23 @@ class QuizViewController: UIViewController {
     
     @IBAction func optionA(_ sender: UIButton) {
         changeSelectedOptionColor(optionA)
-//        let isAnsSelected = isAnswerSelectedForCurrentQuestion();
-        
-//        if isAnsSelected {
-            
-//        }
+        setAnswer(currentQuestion!.optionA)
     }
     @IBAction func optionB(_ sender: UIButton) {
         changeSelectedOptionColor(optionB)
+        setAnswer(currentQuestion!.optionB)
     }
     @IBAction func optionC(_ sender: UIButton) {
         changeSelectedOptionColor(optionC)
+        setAnswer(currentQuestion!.optionC)
     }
     @IBAction func optionD(_ sender: UIButton) {
         changeSelectedOptionColor(optionD)
-    }
-    @IBAction func next(_ sender: UIButton) {
-        
-    }
-    @IBAction func prev(_ sender: UIButton) {
-        
+        setAnswer(currentQuestion!.optionD)
     }
     
-    @IBAction func setAnswer(_ sender: UIButton) {
-        
+    func setAnswer(_ userAns: String) {
+        currentQuestion?.userAnswer = userAns
     }
     
     @IBAction func prevQuestion(_ sender: UIButton) {
@@ -70,6 +69,7 @@ class QuizViewController: UIViewController {
         
         currentQuestion = self.selectedQuestions[currentQuestionIndex]
         setValuesForLabels()
+        setSelectedAns()
     }
     
     @IBAction func nextQuestion(_ sender: UIButton) {
@@ -87,6 +87,13 @@ class QuizViewController: UIViewController {
         
         setValuesForLabels()
         
+        unsetColor(optionA)
+        unsetColor(optionB)
+        unsetColor(optionC)
+        unsetColor(optionD)
+        
+        setSelectedAns()
+        
         if currentQuestionIndex != 0 {
             prevButton.isEnabled = true;
         }
@@ -102,6 +109,30 @@ class QuizViewController: UIViewController {
         totalQuestions.text = String(selectedQuestions.count)
     }
     
+    func setSelectedAns() {
+        print("sss", currentQuestion?.userAnswer)
+        if (currentQuestion?.userAnswer != nil) {
+            
+            let a = String(optionA.titleLabel != nil)
+            let b = String(optionB.titleLabel != nil)
+            let c = String(optionC.titleLabel != nil)
+            let d = String(optionD.titleLabel != nil)
+            
+            switch currentQuestion?.userAnswer {
+            case a:
+                setSelectedColor(selectedOption: optionA)
+            case b:
+                setSelectedColor(selectedOption: optionB)
+            case c:
+                setSelectedColor(selectedOption: optionC)
+            case d:
+                setSelectedColor(selectedOption: optionD)
+            default:
+                return
+            }
+        }
+    }
+    
     func setInitialQuestion() {
         selectedQuestions = getRandom3Questions(questions)
         currentQuestion = self.selectedQuestions[0]
@@ -115,8 +146,6 @@ class QuizViewController: UIViewController {
     
     func isAnswerSelectedForCurrentQuestion() -> Bool {
         let isAnsSelected = selectedQuestions[currentQuestionIndex].userAnswer
-        
-        print(isAnsSelected)
         
         return isAnsSelected != nil ? true : false
     }
