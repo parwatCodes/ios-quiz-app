@@ -28,6 +28,19 @@ struct Question: Encodable {
     mutating func setAnswer(option: String) {
         self.userAnswer = option;
     }
+    
+    func getQuestionOptions() -> [String: String] {
+        let props = ["optionA": optionA,"optionB": optionA,"optionC": optionC,"optionD": optionD]
+        
+        return props
+    }
+    
+    func getQuestionAns() -> [String: String?] {
+        return [
+            "answer": answer,
+            "userAnswer": userAnswer
+        ]
+    }
 }
 
 //extension Encodable {

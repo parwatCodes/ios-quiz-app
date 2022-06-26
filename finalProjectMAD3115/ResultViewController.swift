@@ -11,6 +11,7 @@ import UIKit
 class ResultViewController: UIViewController {
     var totalPoints: Int?
     var totalQuestions: Int?
+    var selectedQuestions: [Question]?
     
     @IBOutlet weak var message: UILabel!
     @IBOutlet weak var restartQuiz: UIButton!
@@ -22,6 +23,10 @@ class ResultViewController: UIViewController {
         message.text = getMessage()
         scoreInPercentage.text = String(format: "%.2f", getScoreInPercentage())
     }
+    
+//    func getTotalPoints() -> Int {
+//        
+//    }
     
     @IBAction func restartQuiz(_ sender: UIButton) {
         

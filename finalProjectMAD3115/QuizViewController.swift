@@ -11,12 +11,27 @@ import UIKit
 class QuizViewController: UIViewController {
     var currentQuestionIndex = 0 {
         didSet {
+            currentQuestion = self.selectedQuestions[currentQuestionIndex]
+            
+            setValuesForLabels()
+            
+            unsetColor(optionA)
+            unsetColor(optionB)
+            unsetColor(optionC)
+            unsetColor(optionD)
+            
+            setSelectedAns()
+            
             if (currentQuestionIndex == 0) {
                 prevButton.isEnabled = false;
             }
+            
+            if currentQuestionIndex != 0 {
+                prevButton.isEnabled = true;
+            }
+            
         }
     }
-    var totalPoints = 0;
     
     var resultViewCtrl: ResultViewController!
     var selectedQuestions: [Question] = [] // Loads 3 questions randomly
@@ -61,15 +76,11 @@ class QuizViewController: UIViewController {
     }
     
     func setAnswer(_ userAns: String) {
-        currentQuestion?.userAnswer = userAns
+        selectedQuestions[currentQuestionIndex].userAnswer = userAns
     }
     
     @IBAction func prevQuestion(_ sender: UIButton) {
         currentQuestionIndex -= 1
-        
-        currentQuestion = self.selectedQuestions[currentQuestionIndex]
-        setValuesForLabels()
-        setSelectedAns()
     }
     
     @IBAction func nextQuestion(_ sender: UIButton) {
@@ -77,26 +88,12 @@ class QuizViewController: UIViewController {
             resultViewCtrl = storyboard?.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController
 
             resultViewCtrl.modalPresentationStyle = .fullScreen
-            resultViewCtrl.totalPoints = totalPoints
+            resultViewCtrl.selectedQuestions = selectedQuestions
             resultViewCtrl.totalQuestions = selectedQuestions.count
             return self.present(resultViewCtrl, animated: true, completion: nil)
         }
         
         currentQuestionIndex += 1
-        currentQuestion = self.selectedQuestions[currentQuestionIndex]
-        
-        setValuesForLabels()
-        
-        unsetColor(optionA)
-        unsetColor(optionB)
-        unsetColor(optionC)
-        unsetColor(optionD)
-        
-        setSelectedAns()
-        
-        if currentQuestionIndex != 0 {
-            prevButton.isEnabled = true;
-        }
     }
     
     func setValuesForLabels() {
@@ -110,25 +107,12 @@ class QuizViewController: UIViewController {
     }
     
     func setSelectedAns() {
-        print("sss", currentQuestion?.userAnswer)
-        if (currentQuestion?.userAnswer != nil) {
-            
-            let a = String(optionA.titleLabel != nil)
-            let b = String(optionB.titleLabel != nil)
-            let c = String(optionC.titleLabel != nil)
-            let d = String(optionD.titleLabel != nil)
-            
-            switch currentQuestion?.userAnswer {
-            case a:
-                setSelectedColor(selectedOption: optionA)
-            case b:
-                setSelectedColor(selectedOption: optionB)
-            case c:
-                setSelectedColor(selectedOption: optionC)
-            case d:
-                setSelectedColor(selectedOption: optionD)
-            default:
-                return
+        let options = currentQuestion!.getQuestionOptions();
+        
+        for (key, value) in options {
+            if value == currentQuestion?.userAnswer {
+                let button = getButtonFromText(text: key);
+                setSelectedColor(selectedOption: button)
             }
         }
     }
@@ -144,12 +128,6 @@ class QuizViewController: UIViewController {
         nextButton.isEnabled = false
     }
     
-    func isAnswerSelectedForCurrentQuestion() -> Bool {
-        let isAnsSelected = selectedQuestions[currentQuestionIndex].userAnswer
-        
-        return isAnsSelected != nil ? true : false
-    }
-    
     func setSelectedColor(selectedOption: UIButton) {
         selectedOption.backgroundColor = .green
         selectedOption.tintColor = .black
@@ -158,6 +136,21 @@ class QuizViewController: UIViewController {
     func unsetColor(_ option: UIButton) {
         option.backgroundColor = nil
         option.tintColor = nil
+    }
+    
+    func getButtonFromText(text: String) -> UIButton {
+        switch text {
+        case "optionA":
+            return optionA
+        case "optionB":
+            return optionB
+        case "optionC":
+            return optionC
+        case "optionD":
+            return optionD
+        default:
+            return optionD
+        }
     }
     
     func changeSelectedOptionColor(_ selectedOption: UIButton) {
